@@ -1,0 +1,24 @@
+{
+  "name": "100daysofcode",
+  "version": "1.0.0",
+  "main": "demo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunkanmii/Nodejs-Exercises.git"
+  },
+  "author": "Fafowora Sunkanmi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sunkanmii/Nodejs-Exercises/issues"
+  },
+  "homepage": "https://github.com/sunkanmii/Nodejs-Exercises#readme",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  },
+  "devDependencies": {},
+  "keywords": [],
+  "description": ""
+}
