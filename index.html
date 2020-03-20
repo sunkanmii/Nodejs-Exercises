@@ -56,7 +56,16 @@ $(() => {
         }
   
         socket.on("message", addMessage);
-        
+
+        // Message.findONe({message: "badword"}, (err, censored) => {
+        //     if(censored){
+        //         console.log('Censore words found', censored);
+        //         Message.remove({_id: censored.id}, (err) => {
+        //             console.log("Removed censored message");
+        //         })
+        //     }
+        // })
+
         const getMessages = () => {
             $.get("http://localhost:3000/messages", (data) => {
                 data.forEach(addMessage);
