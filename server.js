@@ -36,25 +36,32 @@ app.get("/messages", (req, res) => {
 })
 
 app.post("/messages", async (req, res) => {
-    const message = new Message(req.body);
-
-    const savedMessage = await message.save()
-    console.log("Saved");
-
-    const censored = Message.findOne({
-        message: 'badword'
-    });
-
-    if (censored) {
-        await Message.remove({
-            _id: censored.id
-        })
-    } else {
-        messages.push(req.body);
-        io.emit("message", req.body);
-        res.sendStatus(200);
+    try {
+        throw 'some error'
+        const message = new Message(req.body);
+    
+        const savedMessage = await message.save()
+        console.log("Saved");
+    
+        const censored = Message.findOne({
+            message: 'badword'
+        });
+    
+        if (censored) {
+            await Message.remove({
+                _id: censored.id
+            })
+        } else {
+            messages.push(req.body);
+            io.emit("message", req.body);
+            res.sendStatus(200);
+        }
+        res.sendStatus(500);
+        
+    } catch (error) {
+        res.sendStatus(500);
+        return console.log(error);
     }
-    sendStatus(500);
     // .catch(err => {
     //     res.sendStatus(400);
     //     return console.log(err);
