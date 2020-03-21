@@ -7,9 +7,13 @@ const mongoose = require("mongoose");
 
 app.use(express.static(__dirname));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.urlencoded({
+    extended: false
+}))
 
-const dbUrl = ""
+mongoose.Promise = Promise;
+
+const dbUrl = "";
 
 const Message = mongoose.model("Message", {
     name: String,
@@ -17,36 +21,46 @@ const Message = mongoose.model("Message", {
 })
 
 // Messages service endpoint
-const messages = [
-    {name: "Sunkanmi", message: "Hey! What's up?"},
-    {name: "Yinka", message: "Hey! What's up?"}
+const messages = [{
+        name: "Sunkanmi",
+        message: "Hey! What's up?"
+    },
+    {
+        name: "Yinka",
+        message: "Hey! What's up?"
+    }
 ];
 
-app.get("/messages", (req, res) =>{
+app.get("/messages", (req, res) => {
     res.send(messages);
 })
 
-app.post("/messages", (req, res) =>{
+app.post("/messages", async (req, res) => {
     const message = new Message(req.body);
 
-    message.save((err) => {
-        if(err){
-            sendStatus(500);    
-        }
+    const savedMessage = await message.save()
+    console.log("Saved");
 
-        MessageChannel.findOne({message: 'badword'}, (err, censored) => {
-            if(censored){
-                console.log("Censored words found", censored);
-                Message.remove({_id: censored.id}, (err) => {
-                    console.log("Removed censored message.");
-                })
-            }
+    const censored = Message.findOne({
+        message: 'badword'
+    });
+
+    if (censored) {
+        await Message.remove({
+            _id: censored.id
         })
-    })
+    } else {
+        messages.push(req.body);
+        io.emit("message", req.body);
+        res.sendStatus(200);
+    }
+    sendStatus(500);
+    // .catch(err => {
+    //     res.sendStatus(400);
+    //     return console.log(err);
+    // })
 
-    messages.push(req.body);
-    io.emit("message", req.body);
-    res.sendStatus(200);
+
 })
 
 io.on("connection", (socket) => {
