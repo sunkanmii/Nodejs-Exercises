@@ -16,7 +16,7 @@
   },
   "homepage": "https://github.com/sunkanmii/Nodejs-Exercises#readme",
   "dependencies": {
-    "lodash": "^4.17.15"
+    "lodash": "^4.17.19"
   },
   "devDependencies": {},
   "keywords": [],
